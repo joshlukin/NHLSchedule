@@ -91,6 +91,7 @@ public class Game {
         homeScore = homeGoals.size();
         awayScore = awayGoals.size();
     }
+
     public void setNetworks(List<String> networks){
         this.networks = networks;
     }
@@ -129,28 +130,39 @@ public class Game {
     public int getID(){
         return ID;
     }
-    @Override
-    public String toString() {
-        String htmlAwayImg = "<img src=\"images/" + awayTeam.getImg() + "\" width=\"39\" height=\"26\" style=\"vertical-align: middle;\">";
-        String htmlHomeImg = "<img src=\"images/" + homeTeam.getImg() + "\" width=\"39\" height=\"26\" style=\"vertical-align: middle;\">";
 
-        String scoreLink = "<html><head><style>"
-                + "a:link { color: #EC7774; }"
-                + "a:visited { color: #838799; }"
-                + "a:hover { color: #ff3f3b; }"
-                + "a:active { color: #ff3f3b; }"
-                + "</style></head><body>"
-                + "<a href=\"/GameID?id=" + ID + "\">Game Info</a>"
-                + "</body></html>";
+    // Removed old toString() method
 
-
-        String content = this.getTime() + " | " + htmlAwayImg + " " + awayTeam + " @ " + htmlHomeImg + " " + homeTeam + " " + scoreLink;
-
-        return isDivRival
-                ? "<span style=\"background-color: #855b6b; padding: 2px 4px; border-radius: 4px;\">" + content + "</span>"
-                : content;
+    public String getAwayTeamImageHTML() {
+        return "<img src=\"images/" + awayTeam.getImg() + "\" width=\"39\" height=\"26\" style=\"vertical-align: middle;\">";
     }
 
+    public String getHomeTeamImageHTML() {
+        return "<img src=\"images/" + homeTeam.getImg() + "\" width=\"39\" height=\"26\" style=\"vertical-align: middle;\">";
+    }
+
+    public String getGameInfoLinkHTML() {
+        return "<a href=\"/GameID?id=" + ID + "\" class=\"game-info-link\">Game Info</a>";
+    }
+
+    public String getNetworksHTML() {
+        if (networks == null || networks.isEmpty()) {
+            return "N/A";
+        }
+        return String.join(", ", networks);
+    }
+
+    public String getScoreHTML() {
+        LocalTime now = Main.now;
+        if (time.isAfter(now)) {
+            return "-";
+        }
+        return awayScore + " - " + homeScore;
+    }
+
+    public boolean isDivisionRivalry() {
+        return isDivRival;
+    }
 
     public int getHomeScore() {
         return homeScore;

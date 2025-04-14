@@ -5,6 +5,10 @@
     --logo-size: 100px;    /* Larger logos */
     --header-bg: #838799; /* Header background color */
     --highlight-text-color: #EC7774;
+    --rival-bg: rgba(133, 91, 107, 0.4);
+    --rival-hover: rgba(133, 91, 107, 0.6);
+    --table-border: rgba(131, 135, 153, 0.3);
+    --table-hover: rgba(131, 135, 153, 0.1);
 }
 
 body {
@@ -14,6 +18,12 @@ body {
     text-align: center;
     margin: 0;
     padding: 20px;
+}
+
+h1 {
+    margin-bottom: 30px;
+    font-size: 36px;
+    font-weight: bold;
 }
 
 .game-container {
@@ -63,19 +73,119 @@ body {
     background-color: var(--header-bg);
 }
 
-/* Centering Table and Left Justifying Text */
+/* Games Table Styles */
+.games-table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+}
+
+.games-table th {
+    background-color: var(--header-bg);
+    color: var(--bg-color);
+    padding: 12px 15px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 2px solid var(--highlight-text-color);
+    letter-spacing: 0.5px;
+}
+
+.games-table td {
+    padding: 12px 10px;
+    text-align: center;
+    border-bottom: 1px solid var(--table-border);
+    transition: background-color 0.2s;
+}
+
+.games-table tr:hover {
+    background-color: var(--table-hover);
+}
+
+.division-rivalry {
+    background-color: var(--rival-bg);
+}
+
+.division-rivalry:hover {
+    background-color: var(--rival-hover) !important;
+}
+
+.game-info-link {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--header-bg);
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.game-info-link:hover {
+    background-color: var(--highlight-text-color);
+}
+
+.legend {
+    width: 90%;
+    margin: 30px auto 10px;
+    text-align: left;
+    padding: 15px;
+    background-color: rgba(131, 135, 153, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    background-color: var(--rival-bg);
+    border-radius: 4px;
+}
+
+.network-list {
+    display: block;
+    font-size: 12px;
+    color: rgba(234, 233, 227, 0.8);
+    margin-top: 3px;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.network-list:hover {
+    overflow: visible;
+    white-space: normal;
+}
+
+.back-link {
+    margin: 10px 0 25px;
+    display: inline-block;
+    color: var(--highlight-text-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: var(--header-bg);
+    text-decoration: underline;
+}
+
+/* Keep existing styles */
 .centered-table {
-    width: 60%; /* Table width */
-    margin: 20px auto; /* Centering the table */
-    border-collapse: collapse; /* Removing gaps between cells */
+    width: 60%;
+    margin: 20px auto;
+    border-collapse: collapse;
 }
 
 .centered-table td {
-    text-align: left; /* Left-align text inside the table cells */
+    text-align: left;
     padding: 10px;
-    color: #EAE9E3; /* Light text color for the table content */
-}
-
-.centered-table td {
-    border-bottom: 1px solid #838799; /* Optional: border between rows for better separation */
+    color: #EAE9E3;
+    border-bottom: 1px solid #838799;
 }

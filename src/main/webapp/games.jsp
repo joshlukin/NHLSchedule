@@ -1,4 +1,5 @@
 <%@ page import="com.joshlukin.nhldailyschedule.Main" %>
+<%@ page import="com.joshlukin.nhldailyschedule.Game" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -15,6 +16,96 @@
     .back-link:hover {
       color: var(--header-bg);
       text-decoration: underline;
+    }
+
+    .games-table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+
+    .games-table th {
+      background-color: var(--header-bg);
+      color: var(--bg-color);
+      padding: 10px;
+      font-weight: bold;
+      text-align: center;
+      border-bottom: 2px solid var(--highlight-text-color);
+    }
+
+    .games-table td {
+      padding: 12px 10px;
+      text-align: center;
+      border-bottom: 1px solid rgba(131, 135, 153, 0.3);
+    }
+
+    .games-table tr:hover {
+      background-color: rgba(131, 135, 153, 0.1);
+    }
+
+    .division-rivalry {
+      background-color: rgba(133, 91, 107, 0.4);
+    }
+
+    .division-rivalry:hover {
+      background-color: rgba(133, 91, 107, 0.6) !important;
+    }
+
+    .game-info-link {
+      display: inline-block;
+      padding: 5px 10px;
+      background-color: var(--header-bg);
+      color: var(--text-color);
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+
+    .game-info-link:hover {
+      background-color: var(--highlight-text-color);
+    }
+
+    .legend {
+      width: 90%;
+      margin: 30px auto 10px;
+      text-align: left;
+      padding: 15px;
+      background-color: rgba(131, 135, 153, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .legend-color {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      background-color: rgba(133, 91, 107, 0.4);
+      border-radius: 4px;
+    }
+
+    .network-list {
+      display: block;
+      font-size: 12px;
+      color: rgba(234, 233, 227, 0.8);
+      margin-top: 3px;
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .network-list:hover {
+      overflow: visible;
+      white-space: normal;
+    }
+
+    .vs-text {
+      color: var(--highlight-text-color);
+      font-weight: bold;
     }
   </style>
 </head>
@@ -39,25 +130,72 @@
 <!-- Back to home link -->
 <a href="${pageContext.request.contextPath}/" class="back-link">← Back to Home</a>
 
-<!-- Centered Table with Left-Justified Text -->
-<table class="centered-table">
+<!-- Structured Table for Games -->
+<table class="games-table">
+  <thead>
+  <tr>
+    <th>Time (ET)</th>
+    <th>Away Team</th>
+    <th>Score</th>
+    <th>Home Team</th>
+    <th>Networks</th>
+    <th>Details</th>
+  </tr>
+  </thead>
+  <tbody>
   <%
-    String[] gameData;
     try {
-      gameData = Main.getGamesForDate(selectedDate).split("\n");
-    } catch (Exception e) {
-      gameData = new String[]{"Error loading games for this date."};
-    }
+      // Execute getGamesForDate to load games
+      Main.getGamesForDate(selectedDate);
 
-    for (String game : gameData) {
+      // Access the games from tdGameArr
+      Game[] games = Main.tdGameArr;
+
+      if (games == null || games.length == 0) {
   %>
   <tr>
-    <td><%= game %></td>
+    <td colspan="6">No games scheduled for this date.</td>
+  </tr>
+  <%
+  } else {
+    for (Game game : games) {
+      String rowClass = game.isDivisionRivalry() ? "division-rivalry" : "";
+  %>
+  <tr class="<%= rowClass %>">
+    <td><%= game.getTime() %></td>
+    <td>
+      <%= game.getAwayTeamImageHTML() %>
+      <%= game.getAwayTeam().getName() %>
+    </td>
+    <td><%= game.getScoreHTML() %></td>
+    <td>
+      <%= game.getHomeTeamImageHTML() %>
+      <%= game.getHomeTeam().getName() %>
+    </td>
+    <td>
+      <span class="network-list"><%= game.getNetworksHTML() %></span>
+    </td>
+    <td><%= game.getGameInfoLinkHTML() %></td>
+  </tr>
+  <%
+      }
+    }
+  } catch (Exception e) {
+  %>
+  <tr>
+    <td colspan="6">Error loading games for this date: <%= e.getMessage() %></td>
   </tr>
   <%
     }
   %>
+  </tbody>
 </table>
+
+<!-- Division Rivalry Legend -->
+<div class="legend">
+  <span class="legend-color"></span>
+  <span>Division Rivalry Games - Teams from the same division playing against each other</span>
+</div>
 
 <footer style="background-color: var(--bg-color); color: var(--header-bg); text-align: center; padding: 10px; font-size: 14px; margin-top: 20px;">
   <p>NHL logos and team names are trademarks of the National Hockey League and their respective teams.</p>
