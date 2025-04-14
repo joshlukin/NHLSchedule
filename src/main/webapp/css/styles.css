@@ -1,0 +1,81 @@
+/* styles.css */
+:root {
+    --bg-color: #1B2B3F;  /* Dark mode background */
+    --text-color: #EAE9E3; /* Light text color */
+    --logo-size: 100px;    /* Larger logos */
+    --header-bg: #838799; /* Header background color */
+    --highlight-text-color: #EC7774;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+.game-container {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.game-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.game-time {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.score-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.team-logo img {
+    width: var(--logo-size);
+    height: auto;
+}
+
+.game-table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+.game-table th, .game-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.game-table th {
+    background-color: var(--header-bg);
+}
+
+/* Centering Table and Left Justifying Text */
+.centered-table {
+    width: 60%; /* Table width */
+    margin: 20px auto; /* Centering the table */
+    border-collapse: collapse; /* Removing gaps between cells */
+}
+
+.centered-table td {
+    text-align: left; /* Left-align text inside the table cells */
+    padding: 10px;
+    color: #EAE9E3; /* Light text color for the table content */
+}
+
+.centered-table td {
+    border-bottom: 1px solid #838799; /* Optional: border between rows for better separation */
+}
