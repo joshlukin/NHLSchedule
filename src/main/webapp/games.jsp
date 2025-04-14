@@ -92,10 +92,13 @@
       font-size: 12px;
       color: rgba(234, 233, 227, 0.8);
       margin-top: 3px;
+      text-align: center;
       max-width: 150px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .network-list:hover {

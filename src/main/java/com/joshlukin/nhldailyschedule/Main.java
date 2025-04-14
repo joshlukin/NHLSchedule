@@ -68,6 +68,9 @@ public class Main {
         sb.append(".team-logo { width: " + logoSize + "px; height: auto; }");
         sb.append(".score-cell { font-size: 24px; font-weight: bold; border-left: none; border-right: none; text-align: center; }"); // Score larger, no vertical borders
         sb.append(".top-row { display: flex; align-items: center; justify-content: center; gap: 10px; }"); // Align logos and scores
+        sb.append(".goals-container { display: flex; width: 100%; }");
+        sb.append(".team-goals { flex: 1; text-align: left; padding: 10px; }");
+        sb.append(".team-column { width: 50%; text-align: left; }");
         sb.append("</style>");
 
         sb.append("<div class='game-container'>");
@@ -89,32 +92,57 @@ public class Main {
 
         if(game.getTimeLT().isAfter(now)){
             sb.append("<tr>");
-            sb.append("<td>Game has not started</td>");
+            sb.append("<td colspan='2'>Game has not started</td>");
+            sb.append("</tr>");
         }
         else if(game.getAwayScore()==0 && game.getHomeScore()==0){
             sb.append("<tr>");
-            sb.append("<td>No scoring yet</td>");
+            sb.append("<td colspan='2'>No scoring yet</td>");
+            sb.append("</tr>");
         }
         else{
             // Second row for goal information
             sb.append("<tr>");
 
             // Home Team Goals
-            sb.append("<td>");
-            for (Goal goal : game.getHomeGoals()) {
-                sb.append(goal.getTime() + " - " + goal.getPlayerName() + " (" + String.join(", ", goal.getAssists()) + ")<br>");
+            sb.append("<td class='team-column'>");
+            sb.append("<strong>" + homeTeam.getName() + " Goals:</strong><br>");
+            if (game.getHomeGoals().isEmpty()) {
+                sb.append("No goals yet");
+            } else {
+                for (Goal goal : game.getHomeGoals()) {
+                    sb.append(goal.getTime() + " - " + goal.getPlayerName());
+                    if (goal.getAssists() != null && goal.getAssists().length > 0) {
+                        sb.append(" (");
+                        sb.append(String.join(", ", goal.getAssists()));
+                        sb.append(")");
+                    }
+                    sb.append("<br>");
+                }
             }
             sb.append("</td>");
 
             // Away Team Goals
-            sb.append("<td>");
-            for (Goal goal : game.getAwayGoals()) {
-                sb.append(goal.getTime() + " - " + goal.getPlayerName() + " (" + String.join(", ", goal.getAssists()) + ")<br>");
+            sb.append("<td class='team-column'>");
+            sb.append("<strong>" + awayTeam.getName() + " Goals:</strong><br>");
+            if (game.getAwayGoals().isEmpty()) {
+                sb.append("No goals yet");
+            } else {
+                for (Goal goal : game.getAwayGoals()) {
+                    sb.append(goal.getTime() + " - " + goal.getPlayerName());
+                    if (goal.getAssists() != null && goal.getAssists().length > 0) {
+                        sb.append(" (");
+                        sb.append(String.join(", ", goal.getAssists()));
+                        sb.append(")");
+                    }
+                    sb.append("<br>");
+                }
             }
             sb.append("</td>");
+
+            sb.append("</tr>");
         }
 
-        sb.append("</tr>");
         sb.append("</table>");
         sb.append("</div>");
 
@@ -141,7 +169,7 @@ public class Main {
      * @param date in format "YYYY-MM-DD"
      */
     static JsonElement getSchedule(String date) throws URISyntaxException, IOException {
-       return parseURL("https://api-web.nhle.com/v1/schedule/"+date);
+        return parseURL("https://api-web.nhle.com/v1/schedule/"+date);
     }
 
     public static JsonElement parseURL(String URLName) throws URISyntaxException, IOException {
