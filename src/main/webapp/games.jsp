@@ -141,7 +141,7 @@
     <th>Away Team</th>
     <th>Score</th>
     <th>Home Team</th>
-    <th>Networks</th>
+    <th>Networks (hover to see more)</th>
     <th>Details</th>
   </tr>
   </thead>
@@ -197,7 +197,7 @@
 <!-- Division Rivalry Legend -->
 <div class="legend">
   <span class="legend-color"></span>
-  <span>Division Rivalry Games - Teams from the same division playing against each other</span>
+  <span>- Division Rivalry Games</span>
 </div>
 
 <footer style="background-color: var(--bg-color); color: var(--header-bg); text-align: center; padding: 10px; font-size: 14px; margin-top: 20px;">

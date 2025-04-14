@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.net.HttpURLConnection;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import com.google.gson.JsonParser;
 public class Main {
 
     public static LocalTime now = LocalTime.now();
+    public static LocalDate todayLD = LocalDate.now();
     public static Game[] tdGameArr;
     public static String main() throws URISyntaxException, IOException {
         //<editor-fold desc = "Ping Test">
@@ -28,7 +30,7 @@ public class Main {
         }
         //</editor-fold>
         String today = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE);
-        JsonObject todayWeek = getSchedule(today).getAsJsonObject(); //FIXME replace with ``today``
+        JsonObject todayWeek = getSchedule(today).getAsJsonObject();
 
         int numGames = Integer.parseInt(todayWeek.get("gameWeek").getAsJsonArray().get(0).getAsJsonObject().get("numberOfGames").getAsString());
         System.out.println("Number of games: " + numGames);
@@ -53,6 +55,8 @@ public class Main {
     }
 
     public static String generateGameHTML(int id, String bgColor, String textColor, int logoSize) throws URISyntaxException, IOException {
+        now = LocalTime.now();
+
         Game game = new Game(id); // Create Game object, which autopopulates goals
         Team homeTeam = game.getHomeTeam();
         Team awayTeam = game.getAwayTeam();
@@ -90,7 +94,8 @@ public class Main {
         sb.append("</th>");
         sb.append("</tr>");
 
-        if(game.getTimeLT().isAfter(now)){
+        if(!game.hasStarted()) {
+            System.out.println("ALERT ALERT ALERT  ");
             sb.append("<tr>");
             sb.append("<td colspan='2'>Game has not started</td>");
             sb.append("</tr>");
@@ -106,7 +111,6 @@ public class Main {
 
             // Home Team Goals
             sb.append("<td class='team-column'>");
-            sb.append("<strong>" + homeTeam.getName() + " Goals:</strong><br>");
             if (game.getHomeGoals().isEmpty()) {
                 sb.append("No goals yet");
             } else {
@@ -124,7 +128,6 @@ public class Main {
 
             // Away Team Goals
             sb.append("<td class='team-column'>");
-            sb.append("<strong>" + awayTeam.getName() + " Goals:</strong><br>");
             if (game.getAwayGoals().isEmpty()) {
                 sb.append("No goals yet");
             } else {

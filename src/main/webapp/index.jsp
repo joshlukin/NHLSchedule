@@ -64,9 +64,9 @@
 </div>
 
 <div class="quick-links">
+    <a href="${pageContext.request.contextPath}/games?date=<%= java.time.LocalDate.now().minusDays(1) %>">Yesterday's Games</a>
     <a href="${pageContext.request.contextPath}/games?date=<%= java.time.LocalDate.now() %>">Today's Games</a>
     <a href="${pageContext.request.contextPath}/games?date=<%= java.time.LocalDate.now().plusDays(1) %>">Tomorrow's Games</a>
-    <a href="${pageContext.request.contextPath}/games?date=<%= java.time.LocalDate.now().minusDays(1) %>">Yesterday's Games</a>
 </div>
 
 <footer style="background-color: var(--bg-color); color: var(--header-bg); text-align: center; padding: 10px; font-size: 14px; margin-top: 20px;">

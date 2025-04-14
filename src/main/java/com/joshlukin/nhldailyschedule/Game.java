@@ -5,12 +5,10 @@ import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
 
@@ -90,8 +88,12 @@ public class Game {
         }
         homeScore = homeGoals.size();
         awayScore = awayGoals.size();
+
     }
 
+    public boolean hasStarted(){
+        return this.getDateLD().isBefore(Main.todayLD) || (this.getDateLD().isEqual(Main.todayLD) && this.getTimeLT().isBefore(Main.now));
+    }
     public void setNetworks(List<String> networks){
         this.networks = networks;
     }
@@ -108,7 +110,9 @@ public class Game {
         return this.awayGoals;
     }
 
-
+    public LocalDate getDateLD(){
+        return LocalDate.parse(date);
+    }
     /**
      *
      * @return the start time in "h:mm AM/PM"
@@ -153,9 +157,9 @@ public class Game {
     }
 
     public String getScoreHTML() {
-        LocalTime now = Main.now;
-        if (time.isAfter(now)) {
-            return "-";
+        LocalTime currentTime = LocalTime.now();
+        if (!this.hasStarted()) {
+            return "Has not started";
         }
         return awayScore + " - " + homeScore;
     }
