@@ -160,4 +160,51 @@ public class Main {
     public static String getDate(){
         return java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE);
     }
+
+    /**
+     *
+     * @param date in "YYYY-MM-DD" format
+     * @return
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    public static String getGamesForDate(String date) throws URISyntaxException, IOException {
+        JsonObject dateWeek = getSchedule(date).getAsJsonObject();
+
+        // Check if there are games for this date in the response
+        if (dateWeek.get("gameWeek").getAsJsonArray().size() == 0) {
+            return "No games scheduled for this date.";
+        }
+
+        int numGames;
+        try {
+            numGames = Integer.parseInt(dateWeek.get("gameWeek").getAsJsonArray().get(0).getAsJsonObject().get("numberOfGames").getAsString());
+        } catch (Exception e) {
+            return "No games scheduled for this date.";
+        }
+
+        if (numGames == 0) {
+            return "No games scheduled for this date.";
+        }
+
+        JsonArray dateGames = dateWeek.get("gameWeek").getAsJsonArray().get(0).getAsJsonObject().get("games").getAsJsonArray();
+        tdGameArr = new Game[numGames];
+
+        for (int i = 0; i < numGames; i++) {
+            Game g = new Game(dateGames.get(i).getAsJsonObject().get("id").getAsInt());
+            int numNetworks = dateGames.get(i).getAsJsonObject().get("tvBroadcasts").getAsJsonArray().size();
+            List<String> networks = new ArrayList<>();
+            for (int j = 0; j < numNetworks; j++) {
+                networks.add(dateGames.get(i).getAsJsonObject().get("tvBroadcasts").getAsJsonArray().get(j).getAsJsonObject().get("network").getAsString());
+            }
+            g.setNetworks(networks);
+            tdGameArr[i] = g;
+        }
+
+        StringBuilder info = new StringBuilder();
+        for (Game g : tdGameArr) {
+            info.append(g + "  " + g.getNetworks().toString() + "<br> \n");
+        }
+        return info.toString();
+    }
 }
