@@ -13,19 +13,19 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
 
 public class Game {
-    private Team homeTeam;
-    private Team awayTeam;
+    private final Team homeTeam;
+    private final Team awayTeam;
     private final int ID;
-    private String date;
+    private final String date;
     private List<String> networks;
-    private boolean isDivRival;
+    private final boolean isDivRival;
     private boolean isRivalSpecial;
     private LocalTime time;
     private String imgName;
-    private List<Goal> homeGoals;
-    private List<Goal> awayGoals;
-    private int homeScore;
-    private int awayScore;
+    private final List<Goal> homeGoals;
+    private final List<Goal> awayGoals;
+    private final int homeScore;
+    private final int awayScore;
 
 
     Game(int id) throws URISyntaxException, IOException {
@@ -73,7 +73,7 @@ public class Game {
                     JsonObject assistObject = assistsArr.get(k).getAsJsonObject();
                     assistsNamesArr[k] = assistObject.get("name").getAsJsonObject().get("default").getAsString();
                 }
-                Goal goal = new Goal(team, name, time, type, assistsNamesArr); //TODO Add player ID functionality
+                Goal goal = new Goal(team, name, time, i, type, assistsNamesArr); //TODO Add player ID functionality
                 if(goal.getTeam() == homeTeam){
                     homeGoals.add(goal);
                 } else if(goal.getTeam() == awayTeam){
@@ -157,7 +157,6 @@ public class Game {
     }
 
     public String getScoreHTML() {
-        LocalTime currentTime = LocalTime.now();
         if (!this.hasStarted()) {
             return "Has not started";
         }
